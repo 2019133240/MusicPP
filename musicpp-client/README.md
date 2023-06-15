@@ -1,4 +1,4 @@
-# mpp-client
+# musicpp-client
 
 ## Project setup
 ```
