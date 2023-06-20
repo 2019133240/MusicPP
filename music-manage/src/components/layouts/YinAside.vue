@@ -40,6 +40,7 @@ emitter.on("collapse", (msg) => {
 </script>
 
 <style scoped>
+
 .sidebar {
   display: block;
   position: absolute;
@@ -60,4 +61,5 @@ emitter.on("collapse", (msg) => {
 .sidebar-el-menu:not(.el-menu--collapse) {
   width: 150px;
 }
+
 </style>

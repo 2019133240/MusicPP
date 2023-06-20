@@ -6,6 +6,15 @@
       <span>{{ musicName }}</span>
     </div>
     <yin-header-nav class="yin-header-nav" :styleList="headerNavList" :activeName="activeNavName" @click="goPage"></yin-header-nav>
+    <!-- dark mode切换 -->
+    <span>夜间模式</span>
+    <el-switch
+        class="dark-switch"
+        inline-prompt
+        v-model="theme"
+        @click="toggle()"
+    >
+    </el-switch>
     <!--搜索框-->
     <div class="header-search">
       <el-input placeholder="搜索" :prefix-icon="Search" v-model="keywords" @keyup.enter="goSearch()" />
@@ -32,6 +41,7 @@ import YinHeaderNav from "./YinHeaderNav.vue";
 import mixin from "@/mixins/mixin";
 import { HEADERNAVLIST, SIGNLIST, MENULIST, Icon, MUSICNAME, RouterName, NavName } from "@/enums";
 import { HttpManager } from "@/api";
+import { useDark, useToggle } from '@vueuse/core';
 
 export default defineComponent({
   components: {
@@ -54,6 +64,19 @@ export default defineComponent({
     const activeNavName = computed(() => store.getters.activeNavName);
     const userPic = computed(() => store.getters.userPic);
     const token = computed(() => store.getters.token);
+
+    const theme = ref<boolean>(false)
+ 
+    const isDark = useDark({
+      // 存储到localStorage/sessionStorage中的Key 根据自己的需求更改
+      storageKey: 'useDarkKEY',
+      // 暗黑class名字
+      valueDark: 'dark',
+      // 高亮class名字
+      valueLight: 'light',
+    })
+ 
+    const toggle = useToggle(isDark);
 
     function goPage(path, name) {
       if (!path && !name) {
@@ -101,6 +124,8 @@ export default defineComponent({
       goMenuList,
       goSearch,
       attachImageUrl: HttpManager.attachImageUrl,
+      theme,
+      toggle,
     };
   },
 });
@@ -117,6 +142,7 @@ export default defineComponent({
 }
 
 @media screen and (max-width: $sm) {
+
   .header-logo {
     margin: 0 1rem;
     span {
@@ -142,6 +168,7 @@ export default defineComponent({
   display: flex;
   white-space: nowrap;
   flex-wrap: nowrap;
+  background-color: #808080;
 }
 
 /* LOGO */
@@ -160,6 +187,10 @@ export default defineComponent({
 
 .yin-header-nav {
   flex: 1;
+}
+
+.dark-switch{
+  margin-top: 14px;
 }
 
 /*搜索输入框*/
@@ -191,4 +222,5 @@ export default defineComponent({
     cursor: pointer;
   }
 }
+
 </style>

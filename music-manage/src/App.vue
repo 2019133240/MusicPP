@@ -17,3 +17,11 @@ window.addEventListener("beforeunload", () => {
   sessionStorage.setItem("dataStore", JSON.stringify(proxy.$store.state));
 });
 </script>
+
+
+<style>
+.dark {
+  background: #252525;
+  color: white;
+}
+</style>

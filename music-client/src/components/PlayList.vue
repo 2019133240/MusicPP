@@ -65,7 +65,6 @@ export default defineComponent({
     font-size: 28px;
     font-weight: 500;
     text-align: center;
-    color: $color-black;
     box-sizing: border-box;
   }
 
@@ -136,5 +135,9 @@ export default defineComponent({
     width: 46%;
     margin: 0.5rem 2%;
   }
+}
+
+.dark{
+  color: #fff;
 }
 </style>

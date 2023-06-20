@@ -5,6 +5,17 @@
       <el-icon v-else><fold /></el-icon>
     </div>
     <div class="logo">{{ nusicName }}</div>
+
+    <!-- dark mode切换 -->
+    <span>夜间模式</span>
+    <el-switch
+        class="dark-switch"
+        inline-prompt
+        v-model="theme"
+        @click="toggle()"
+    >
+    </el-switch>
+
     <div class="header-right">
       <div class="header-user-con">
         <div class="user-avator">
@@ -33,6 +44,7 @@ import { Expand, Fold } from "@element-plus/icons-vue";
 import emitter from "@/utils/emitter";
 import { HttpManager } from "@/api";
 import { RouterName, MUSICNAME } from "@/enums";
+import { useDark, useToggle } from '@vueuse/core';
 
 export default defineComponent({
   components: {
@@ -47,6 +59,20 @@ export default defineComponent({
     const username = ref("admin");
     const userPic = computed(() => store.getters.userPic);
     const nusicName = ref(MUSICNAME);
+
+
+    const theme = ref<boolean>(false)
+ 
+    const isDark = useDark({
+      // 存储到localStorage/sessionStorage中的Key 根据自己的需求更改
+      storageKey: 'useDarkKEY',
+      // 暗黑class名字
+      valueDark: 'dark',
+      // 高亮class名字
+      valueLight: 'light',
+    })
+
+    const toggle = useToggle(isDark);
 
     onMounted(() => {
       if (document.body.clientWidth < 1500) {
@@ -73,6 +99,8 @@ export default defineComponent({
       collapseChage,
       handleCommand,
       attachImageUrl: HttpManager.attachImageUrl,
+      theme,
+      toggle,
     };
   },
 });
@@ -87,7 +115,7 @@ export default defineComponent({
   align-items: center;
   font-size: 20px;
   color: #2c3e50;
-  background: #ffff;
+  background: #808080;
   box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.3);
 }
 
@@ -101,6 +129,11 @@ export default defineComponent({
   width: 250px;
   font-weight: bold;
 }
+
+.dark-switch{
+  margin-top: 2px;
+}
+
 
 .header-right {
   position: absolute;
@@ -126,6 +159,7 @@ export default defineComponent({
 
 .el-dropdown-link {
   cursor: pointer;
+  color: #000;
 }
 
 .el-dropdown-menu__item {
